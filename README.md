@@ -45,4 +45,4 @@ projeto.web.rafael-davi/
 - Clamp() para tipografia fluida
 - Media queries otimizadas
 
-Desenvolvido por para Rafael & Davi 🏥✨
+Desenvolvido por Rafael & Davi 🏥✨

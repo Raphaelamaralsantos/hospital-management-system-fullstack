@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Hospital</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">🏥 Hospital</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="servicos.html">Serviços</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="agendar.html">Agendar</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero" style="min-height: 100vh; padding-top: 8rem;">
+        <div class="container">
+            <h1>Área do Paciente</h1>
+            <p>Faça login para acessar seu histórico e agendar consultas</p>
+            
+            <form id="loginForm" class="form-group" style="max-width: 400px; margin-top: 2rem;">
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Senha" required>
+                <button type="submit" class="button" style="width: 100%;">Entrar</button>
+            </form>
+
+            <p style="margin-top: 1.5rem; opacity: 0.8;">
+                Não tem conta? <a href="#" onclick="demoRegister()" style="color: #fff; text-decoration: underline;">Cadastre-se</a>
+            </p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Hospital Taguatinga. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Demo login with localStorage
+        const loginForm = document.getElementById('loginForm');
+        const demoUsers = {
+            'paciente@test.com': '123456'
+        };
+
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (demoUsers[email] && demoUsers[email] === password) {
+                localStorage.setItem('loggedIn', 'true');
+                localStorage.setItem('userEmail', email);
+                alert('Login realizado com sucesso! Redirecionando...');
+                window.location.href = 'agendar.html';
+            } else {
+                alert('Email ou senha incorretos. Demo: paciente@test.com / 123456');
+            }
+        });
+
+        function demoRegister() {
+            alert('Cadastro demo - use: paciente@test.com / 123456');
+        }
+
+        // Check if logged in
+        if (localStorage.getItem('loggedIn') === 'true') {
+            document.querySelector('.hero-content').innerHTML += '<p style="color: #28a745; font-weight: 600;">Bem-vindo de volta, ' + localStorage.getItem('userEmail') + '!</p>';
+        }
+    </script>
+</body>
+</html>

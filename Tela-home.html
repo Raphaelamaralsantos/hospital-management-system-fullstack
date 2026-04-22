@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo ao Hospital</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('img/fundo.webp') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+            color: white;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0,123,255,0.7), rgba(40,167,69,0.6));
+            z-index: -1;
+        }
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+        .hero-content h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            animation: fadeInUp 1s ease;
+        }
+        .hero-content p {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 40px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .services {
+            padding: 80px 20px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .services h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+        .services p {
+            font-size: 1.2rem;
+            margin-bottom: 50px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            animation: fadeInUp 1s ease 0.6s both;
+        }
+        .service-card {
+            background: rgba(255,255,255,0.2);
+            padding: 40px 20px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeInUp 1s ease both;
+        }
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .service-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        .service-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+        .service-card p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        main {
+            padding: 20px;
+            text-align: center;
+        }
+        .about {
+            padding: 80px 20px;
+            background: rgba(255,255,255,0.05);
+        }
+        .about h2 {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInUp 1s ease;
+        }
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        .about-text {
+            text-align: left;
+        }
+        .about-text p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .about-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .contact {
+            padding: 80px 20px;
+            background: rgba(40,167,69,0.1);
+        }
+        .contact h2 {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .contact p {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 50px;
+        }
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto 50px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .contact-form input,
+        .contact-form textarea {
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.9);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: box-shadow 0.3s ease;
+        }
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            box-shadow: 0 0 20px rgba(255,255,255,0.5);
+        }
+        .contact-info {
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        .contact-info p {
+            margin: 10px 0;
+        }
+        
+        footer {
+            background: linear-gradient(135deg, #000000, #1a1a1a);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 50px;
+        }
+        .button {
+            display: inline-block;
+            margin: 10px;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,123,255,0.4);
+            background: linear-gradient(45deg, #0056b3, #007bff);
+        }
+    </style>
+</head>
+<body>
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Bem-vindo ao Hospital</h1>
+            <p>Cuidando da sua saúde com excelência e carinho</p>
+            <div class="hero-buttons">
+                <a href="#servicos" class="button">Agendar Consulta</a>
+                <a href="#contato" class="button">Fale Conosco</a>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section id="servicos" class="services">
+            <div class="container">
+                <h2>Nossos Serviços</h2>
+                <p>Confira os serviços que oferecemos para atender suas necessidades de saúde com excelência.</p>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-icon">🩺</div>
+                        <h3>Consultas</h3>
+                        <p>Consultas especializadas com os melhores médicos.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">🚑</div>
+                        <h3>Emergência</h3>
+                        <p>Atendimento 24h para emergências médicas.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">🩸</div>
+                        <h3>Exames</h3>
+                        <p>Exames laboratoriais e de imagem completos.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">💉</div>
+                        <h3>Internação</h3>
+                        <p>Unidades de internação confortáveis e seguras.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>Somos um hospital comprometido com a saúde e bem-estar da comunidade. Nossa equipe de profissionais altamente qualificados oferece atendimento humanizado e tecnologia de ponta.</p>
+                        <a href="#contato" class="button">Saiba Mais</a>
+                    </div>
+                    <div class="about-image">
+                        <img src="img/hospital.webp" alt="Fachada do Hospital" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="contato" class="contact">
+            <div class="container">
+                <h2>Entre em Contato</h2>
+                <p>Preencha o formulário abaixo ou ligue para nós.</p>
+                <form class="contact-form">
+                    <input type="text" placeholder="Seu Nome" required>
+                    <input type="email" placeholder="Seu Email" required>
+                    <textarea placeholder="Sua Mensagem" rows="5" required></textarea>
+                    <button type="submit" class="button">Enviar Mensagem</button>
+                </form>
+                <div class="contact-info">
+                    <p>📞 Telefone: (61) 1234-5678</p>
+                    <p>📍 Endereço: Taguatinga-DF</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2023 Hospital. Todos os direitos reservados.</p>
+    </footer>
+</body>
+</html>

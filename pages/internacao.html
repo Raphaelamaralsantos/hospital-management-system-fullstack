@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internação - Hospital Taguatinga</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: url('../img/fundo.webp') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+            color: white;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0,123,255,0.85), rgba(40,167,69,0.7));
+            z-index: -1;
+        }
+        
+        nav {
+            background: rgba(0,0,0,0.9);
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #ffc107;
+        }
+        
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 80px;
+        }
+        
+        .hero-content h1 {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            animation: fadeInUp 1s ease;
+        }
+        
+        .hero-content p {
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            font-weight: 300;
+            margin-bottom: 3rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .section {
+            padding: 6rem 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .section h2 {
+            font-size: clamp(2rem, 6vw, 3rem);
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .card {
+            background: rgba(255,255,255,0.15);
+            padding: 2.5rem 1.5rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+            text-align: center;
+            animation: fadeInUp 1s ease both;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            color: #ffc107;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .feature-card {
+            background: rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ffc107, #28a745);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .room-types {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+        
+        .room-type {
+            background: rgba(255,255,255,0.15);
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 200px;
+            border: 2px solid rgba(255,255,255,0.2);
+            transition: all 0.3s;
+        }
+        
+        .room-type:hover {
+            border-color: #ffc107;
+            transform: translateY(-5px);
+        }
+        
+        .room-type.premium {
+            border-color: #ffd700;
+        }
+        
+        .form-group {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        input, select, textarea {
+            padding: 1.2rem;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.95);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            color: #333;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255,193,7,0.3);
+            transform: translateY(-2px);
+        }
+        
+        .button {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            background: linear-gradient(45deg, #ffc107, #ff8c00);
+            color: #333;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(255,193,7,0.4);
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255,193,7,0.5);
+        }
+        
+        footer {
+            background: linear-gradient(135deg, #000000, #1a1a1a);
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .grid, .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .room-types {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">🏥 Hospital Taguatinga</div>
+            <ul class="nav-links">
+                <li><a href="Tela-home.html">Home</a></li>
+                <li><a href="Tela-home.html#servicos">Serviços</a></li>
+                <li><a href="hospital-info.html">Sobre</a></li>
+                <li><a href="Tela-home.html#contato">Contato</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <section class="hero">
+        <div class="hero-content">
+            <h1>🛏️ Internação Humanizada</h1>
+            <p>Unidades completas com conforto e atendimento especializado 24h</p>
+        </div>
+    </section>
+    
+    <section class="section">
+        <div class="container">
+            <h2>Nossos Leitos e Unidades</h2>
+            <p style="max-width: 700px; margin: 0 auto 3rem; font-size: 1.2rem; opacity: 0.9; text-align: center;">80 leitos totais com UTI, apartamentos privativos e enfermarias confortáveis</p>
+            
+            <div class="room-types">
+<div class="room-type" style="cursor: pointer;" onclick="window.location.href='reserva-apartamento-premium.html'">
+                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">👑</div>
+                    <h3>Apartamento Premium</h3>
+                    <p>1 leito • Banheiro privativo • TV • Ar condicionado • WiFi</p>
+                    <strong>R$ 850/dia</strong>
+                </div>
+
+                <div class="room-type" style="cursor: pointer;" onclick="window.location.href='reserva-apartamento-individual.html'">
+                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">🛏️</div>
+                    <h3>Apartamento Individual</h3>
+                    <p>1 leito • Banheiro • TV • Ar condicionado</p>
+                    <strong>R$ 650/dia</strong>
+                </div>
+
+
+                <div class="room-type" style="cursor: pointer;" onclick="window.location.href='reserva-enfermaria.html'">
+                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">🏥</div>
+                    <h3>Enfermaria</h3>
+                    <p>2-4 leitos • Banheiro compartilhado • Monitoramento 24h</p>
+                    <strong>R$ 350/dia</strong>
+                </div>
+
+
+                <div class="room-type premium" style="cursor: pointer;" onclick="window.location.href='reserva-uti.html'">
+                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">🚨</div>
+                    <h3>UTI Adulto</h3>
+                    <p>Equipamentos completos • Enfermeiros 24h • Médico plantonista</p>
+                    <strong>Convênio/Particular</strong>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    
+    <section class="section">
+        <div class="container">
+            <h2>Diferenciais da Nossa Internação</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">👨‍⚕️</div>
+                    <h3>Equipe 24h</h3>
+                    <p>Médicos, enfermeiros e técnicos disponíveis 24 horas por dia</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🩺</div>
+                    <h3>Monitoramento</h3>
+                    <p>Equipamentos de última geração para monitoramento contínuo</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏠</div>
+                    <h3>Conforto Familiar</h3>
+                    <p>Visitantes autorizados com horários flexíveis e áreas de descanso</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🧼</div>
+                    <h3>Higiene Rigorosa</h3>
+                    <p>Protocolos ANVISA e superfícies auto-desinfetantes</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>App Paciente</h3>
+                    <p>Acompanhe evolução, resultados e prazos pelo celular</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💳</div>
+                    <h3>Parcelamento</h3>
+                    <p>Atendemos todos os convênios e parcelamos em até 12x</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section" style="background: rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2>Precisa de Internação?</h2>
+            <form class="form-group">
+                <input type="text" placeholder="Nome Completo" required>
+                <input type="tel" placeholder="Telefone/WhatsApp" required>
+                <select required>
+                    <option value="">Tipo de quarto desejado</option>
+                    <option>Apartamento Premium</option>
+                    <option>Apartamento Individual</option>
+                    <option>Enfermaria</option>
+                    <option>UTI</option>
+                </select>
+                <input type="date" placeholder="Data aproximada" required>
+                <textarea placeholder="Condição clínica ou motivo da internação" rows="4" required></textarea>
+                <input type="text" placeholder="Convênio (se tiver) ou particular">
+                <button type="submit" class="button">Solicitar Reserva de Leito</button>
+            </form>
+            <p style="text-align: center; margin-top: 2rem; opacity: 0.8; font-size: 1.1rem;">
+                📞 Emergência direta: (61) 1234-5678 | Resposta em 2 minutos
+            </p>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Hospital Taguatinga - Unidade de Internação</p>
+            <p>📞 (61) 1234-5678 | 📍 Taguatinga Norte - UTI 24h</p>
+        </div>
+    </footer>
+    
+    <script>
+        document.querySelector('.form-group').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('✅ Solicitação de internação registrada! Equipe entrará em contato em 5 minutos.');
+        });
+        
+        // Suavizar scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
+

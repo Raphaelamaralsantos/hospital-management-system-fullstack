@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Hospital</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">🏥 Hospital</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="servicos.html">Serviços</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="agendar.html">Agendar</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero" style="min-height: 100vh; padding-top: 8rem;">
+        <div class="container">
+            <h1>Área do Paciente</h1>
+            <p>Acesse sua conta para ver histórico e agendar serviços</p>
+
+            <!-- Formulário de Login -->
+            <div id="loginSection">
+                <form id="loginForm" class="form-group" style="max-width: 400px; margin-top: 2rem;">
+                    <input type="email" id="loginEmail" placeholder="Email" required>
+                    <input type="password" id="loginPassword" placeholder="Senha" required>
+                    <button type="submit" class="button" style="width: 100%;">Entrar</button>
+                </form>
+
+                <p style="margin-top: 1.5rem; opacity: 0.8; text-align: center;">
+                    Não tem conta?
+                    <a href="#" id="showRegister" style="color: #fff; text-decoration: underline;">Cadastre-se</a>
+                </p>
+            </div>
+
+            <!-- Formulário de Registro -->
+            <div id="registerSection" style="display: none;">
+                <form id="registerForm" class="form-group" style="max-width: 400px; margin-top: 2rem;">
+                    <input type="text" id="registerName" placeholder="Nome Completo" required>
+                    <input type="email" id="registerEmail" placeholder="Email" required>
+                    <input type="tel" id="registerPhone" placeholder="Telefone" required>
+                    <input type="password" id="registerPassword" placeholder="Senha (mín. 6 caracteres)" required minlength="6">
+                    <button type="submit" class="button" style="width: 100%;">Cadastrar</button>
+                </form>
+
+                <p style="margin-top: 1.5rem; opacity: 0.8; text-align: center;">
+                    Já tem conta?
+                    <a href="#" id="showLogin" style="color: #fff; text-decoration: underline;">Fazer login</a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Hospital Taguatinga. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Sistema de autenticação real
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const showRegisterBtn = document.getElementById('showRegister');
+        const showLoginBtn = document.getElementById('showLogin');
+        const loginSection = document.getElementById('loginSection');
+        const registerSection = document.getElementById('registerSection');
+
+        // Sistema de notificações toast
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 1rem 1.5rem;
+                border-radius: 10px;
+                color: white;
+                font-weight: 600;
+                z-index: 10000;
+                transform: translateX(400px);
+                transition: transform 0.3s ease;
+                backdrop-filter: blur(10px);
+                ${type === 'success'
+                    ? 'background: rgba(40,167,69,0.9); border: 1px solid rgba(40,167,69,0.5);'
+                    : 'background: rgba(220,53,69,0.9); border: 1px solid rgba(220,53,69,0.5);'
+                }
+            `;
+            document.body.appendChild(toast);
+
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Loading states
+        function showLoading(button) {
+            button.innerHTML = '⏳ Processando...';
+            button.disabled = true;
+        }
+
+        function hideLoading(button, text) {
+            button.innerHTML = text;
+            button.disabled = false;
+        }
+
+        const serverHost = window.location.protocol === 'file:' ? 'http://localhost' : window.location.origin;
+        const serverApiBase = `${serverHost}/hospital/server/api`;
+        const serverPagesBase = `${serverHost}/hospital/pages`;
+
+        if (window.location.protocol === 'file:') {
+            showToast('Abra esta página via http://localhost/hospital/pages/login.html para evitar problemas de API.', 'warning');
+        }
+
+        // Alternar entre login e registro
+        showRegisterBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginSection.style.display = 'none';
+            registerSection.style.display = 'block';
+        });
+
+        showLoginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            registerSection.style.display = 'none';
+            loginSection.style.display = 'block';
+        });
+
+        // Login
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const button = loginForm.querySelector('button');
+            showLoading(button);
+
+            const email = document.getElementById('loginEmail').value;
+            const senha = document.getElementById('loginPassword').value;
+
+            try {
+                const response = await fetch(`${serverApiBase}/auth.php?action=login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, senha })
+                });
+
+                const result = await response.json();
+                console.log('Login result', response.status, result);
+
+                if (result.ok) {
+                    localStorage.setItem('session_id', result.session_id);
+                    showToast('Login realizado com sucesso!');
+                    setTimeout(() => {
+                        window.location.href = `${serverPagesBase}/dashboard.html`;
+                    }, 1000);
+                } else {
+                    showToast(result.error || `Erro no login (${response.status})`, 'error');
+                    alert(`Falha no login: ${result.error || 'Erro desconhecido'}`);
+                }
+
+            } catch (error) {
+                console.error('Erro no login:', error);
+                showToast('Erro de conexão', 'error');
+                alert('Erro de conexão com o servidor. Verifique se o XAMPP está ativo.');
+            } finally {
+                hideLoading(button, 'Entrar');
+            }
+        });
+
+        // Registro
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const button = registerForm.querySelector('button');
+            showLoading(button);
+
+            const nome = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const telefone = document.getElementById('registerPhone').value;
+            const senha = document.getElementById('registerPassword').value;
+
+            try {
+                const response = await fetch(`${serverApiBase}/auth.php?action=register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nome, email, telefone, senha })
+                });
+
+                const result = await response.json();
+
+                if (result.ok) {
+                    showToast('Cadastro realizado com sucesso!');
+                    setTimeout(() => {
+                        registerSection.style.display = 'none';
+                        loginSection.style.display = 'block';
+                        registerForm.reset();
+                    }, 1000);
+                } else {
+                    showToast(result.error || 'Erro no cadastro', 'error');
+                }
+
+            } catch (error) {
+                console.error('Erro no registro:', error);
+                showToast('Erro de conexão', 'error');
+            } finally {
+                hideLoading(button, 'Cadastrar');
+            }
+        });
+
+        // Verificar se já está logado
+        document.addEventListener('DOMContentLoaded', () => {
+            const sessionId = localStorage.getItem('session_id');
+            if (sessionId) {
+                // Verificar se a sessão ainda é válida
+                fetch(`${serverApiBase}/auth.php?action=check`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ session_id: sessionId })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.ok) {
+                        window.location.href = `${serverPagesBase}/dashboard.html`;
+                    } else {
+                        localStorage.removeItem('session_id');
+                    }
+                })
+                .catch(() => {
+                    localStorage.removeItem('session_id');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+
+

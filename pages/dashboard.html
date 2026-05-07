@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Hospital</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .user-info h2 {
+            margin: 0;
+            color: #fff;
+        }
+
+        .user-info p {
+            margin: 0.5rem 0 0 0;
+            opacity: 0.8;
+        }
+
+        .logout-btn {
+            background: linear-gradient(45deg, #dc3545, #c82333);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(220,53,69,0.4);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .card-icon {
+            font-size: 1.5rem;
+            width: 40px;
+            text-align: center;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 0;
+            color: #fff;
+        }
+
+        .item-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            border-left: 4px solid #007bff;
+        }
+
+        .item:last-child {
+            margin-bottom: 0;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .item-title {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .item-date {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .item-details {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            line-height: 1.4;
+        }
+
+        .no-items {
+            text-align: center;
+            padding: 2rem;
+            opacity: 0.6;
+            font-style: italic;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            opacity: 0.7;
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            z-index: 10000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast-success {
+            background: rgba(40,167,69,0.9);
+            border: 1px solid rgba(40,167,69,0.5);
+        }
+
+        .toast-error {
+            background: rgba(220,53,69,0.9);
+            border: 1px solid rgba(220,53,69,0.5);
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">🏥 Hospital</div>
+            <ul class="nav-links">
+                <li><a href="Tela-home.html">Home</a></li>
+                <li><a href="servicos.html">Serviços</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="dashboard-container">
+        <div class="dashboard-header">
+            <div class="user-info">
+                <h2 id="userName">Carregando...</h2>
+                <p id="userEmail">...</p>
+            </div>
+            <button class="logout-btn" onclick="logout()">Sair</button>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <span class="card-icon">📅</span>
+                    <h3 class="card-title">Consultas Agendadas</h3>
+                </div>
+                <div id="agendamentosList" class="item-list">
+                    <div class="loading">Carregando...</div>
+                </div>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <span class="card-icon">🩺</span>
+                    <h3 class="card-title">Exames Agendados</h3>
+                </div>
+                <div id="examesList" class="item-list">
+                    <div class="loading">Carregando...</div>
+                </div>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <span class="card-icon">🏥</span>
+                    <h3 class="card-title">Internações</h3>
+                </div>
+                <div id="internacoesList" class="item-list">
+                    <div class="loading">Carregando...</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        let currentSession = null;
+
+        // Sistema de notificações toast
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Verificar se usuário está logado
+        async function checkAuth() {
+            const serverHost = window.location.protocol === 'file:' ? 'http://localhost' : window.location.origin;
+            const serverApiBase = `${serverHost}/hospital/server/api`;
+            const serverPagesBase = `${serverHost}/hospital/pages`;
+
+            const sessionId = localStorage.getItem('session_id');
+            if (!sessionId) {
+                window.location.href = `${serverPagesBase}/login.html`;
+                return;
+            }
+
+            try {
+                const response = await fetch(`${serverApiBase}/auth.php?action=check`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ session_id: sessionId })
+                });
+
+                const result = await response.json();
+
+                if (!result.ok) {
+                    localStorage.removeItem('session_id');
+                    window.location.href = `${serverPagesBase}/login.html`;
+                    return;
+                }
+
+                currentSession = result.user;
+                document.getElementById('userName').textContent = `Olá, ${result.user.nome}`;
+                document.getElementById('userEmail').textContent = result.user.email;
+
+                loadDashboard();
+
+            } catch (error) {
+                console.error('Erro ao verificar autenticação:', error);
+                window.location.href = `${serverPagesBase}/login.html`;
+            }
+        }
+
+        // Carregar dados do dashboard
+        async function loadDashboard() {
+            try {
+                const serverHost = window.location.protocol === 'file:' ? 'http://localhost' : window.location.origin;
+                const serverApiBase = `${serverHost}/hospital/server/api`;
+                const response = await fetch(`${serverApiBase}/dashboard.php?session_id=${localStorage.getItem('session_id')}`);
+                const result = await response.json();
+
+                if (!result.ok) {
+                    showToast('Erro ao carregar dados', 'error');
+                    return;
+                }
+
+                renderAgendamentos(result.agendamentos);
+                renderExames(result.exames);
+                renderInternacoes(result.internacoes);
+
+            } catch (error) {
+                console.error('Erro ao carregar dashboard:', error);
+                showToast('Erro ao carregar dados', 'error');
+            }
+        }
+
+        // Renderizar agendamentos
+        function renderAgendamentos(agendamentos) {
+            const container = document.getElementById('agendamentosList');
+
+            if (agendamentos.length === 0) {
+                container.innerHTML = '<div class="no-items">Nenhuma consulta agendada</div>';
+                return;
+            }
+
+            container.innerHTML = agendamentos.map(item => `
+                <div class="item">
+                    <div class="item-header">
+                        <span class="item-title">${item.especialidade}</span>
+                        <span class="item-date">${formatDate(item.data)} ${item.hora}</span>
+                    </div>
+                    <div class="item-details">
+                        ${item.observacoes || 'Sem observações'}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Renderizar exames
+        function renderExames(exames) {
+            const container = document.getElementById('examesList');
+
+            if (exames.length === 0) {
+                container.innerHTML = '<div class="no-items">Nenhum exame agendado</div>';
+                return;
+            }
+
+            container.innerHTML = exames.map(item => `
+                <div class="item">
+                    <div class="item-header">
+                        <span class="item-title">${item.tipo_exame}</span>
+                        <span class="item-date">${formatDate(item.data_exame)} ${item.hora_exame}</span>
+                    </div>
+                    <div class="item-details">
+                        ${item.observacoes || 'Sem observações'}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Renderizar internações
+        function renderInternacoes(internacoes) {
+            const container = document.getElementById('internacoesList');
+
+            if (internacoes.length === 0) {
+                container.innerHTML = '<div class="no-items">Nenhuma internação</div>';
+                return;
+            }
+
+            container.innerHTML = internacoes.map(item => `
+                <div class="item">
+                    <div class="item-header">
+                        <span class="item-title">${item.tipo_internacao}</span>
+                        <span class="item-date">${formatDate(item.data_entrada)}${item.data_saida ? ' - ' + formatDate(item.data_saida) : ''}</span>
+                    </div>
+                    <div class="item-details">
+                        ${item.observacoes || 'Sem observações'}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Formatar data
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('pt-BR');
+        }
+
+        // Logout
+        async function logout() {
+            const sessionId = localStorage.getItem('session_id');
+            if (sessionId) {
+                try {
+                    await fetch('../server/api/auth.php?action=logout', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ session_id: sessionId })
+                    });
+                } catch (error) {
+                    console.error('Erro no logout:', error);
+                }
+            }
+
+            localStorage.removeItem('session_id');
+            window.location.href = 'login.html';
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', checkAuth);
+    </script>
+</body>
+</html>

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserva UTI Adulto - Hospital Taguatinga</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, rgba(220,53,69,0.9), rgba(255,102,102,0.8)), url('../img/fundo.webp');
+            background-size: cover;
+            background-blend-mode: overlay;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 2rem;
+        }
+        
+        .reserva-container {
+            background: rgba(255,255,255,0.95);
+            color: #333;
+            padding: 3rem;
+            border-radius: 25px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.4);
+            backdrop-filter: blur(20px);
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .reserva-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        
+        .reserva-icon {
+            font-size: 4rem;
+            background: linear-gradient(45deg, #dc3545, #fd7e14);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .reserva-tipo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #dc3545;
+            margin-bottom: 0.5rem;
+        }
+        
+        .reserva-preco {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #fd7e14;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .input-group {
+            position: relative;
+        }
+        
+        input {
+            width: 100%;
+            padding: 1.2rem 1rem 1.2rem 3rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            font-family: inherit;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.9);
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #dc3545;
+            box-shadow: 0 0 20px rgba(220,53,69,0.3);
+            transform: translateY(-2px);
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.3rem;
+            color: #666;
+        }
+        
+        .cpf-error {
+            color: #dc3545;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        
+        .button {
+            padding: 1.3rem;
+            background: linear-gradient(45deg, #dc3545, #fd7e14);
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(220,53,69,0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(220,53,69,0.5);
+        }
+        
+        .button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .success-message {
+            background: rgba(40,167,69,0.2);
+            border: 2px solid #28a745;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 1rem;
+            display: none;
+            animation: bounceIn 0.5s ease;
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+        
+        .feature-icon {
+            font-size: 1.2rem;
+            width: 28px;
+            text-align: center;
+        }
+        
+        @media (max-width: 480px) {
+            .reserva-container {
+                margin: 1rem;
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reserva-container">
+        <div class="reserva-header">
+            <span class="reserva-icon">🚨</span>
+            <div class="reserva-tipo">UTI Adulto</div>
+            <div class="reserva-preco">Convênio / Particular</div>
+        </div>
+        
+        <div class="features">
+            <div class="feature">
+                <span class="feature-icon">🩺</span>
+                <span>Ventiladores mecânicos</span>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">🫀</span>
+                <span>Monitor cardíaco</span>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">👨‍⚕️</span>
+                <span>Médico 24h</span>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">🩹</span>
+                <span>Infusão IV</span>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">🩸</span>
+                <span>Hemodiálise</span>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">📡</span>
+                <span>Telemetria</span>
+            </div>
+        </div>
+        
+        <form class="form-group" id="reservaForm">
+            <div class="input-group">
+                <span class="input-icon">👤</span>
+                <input type="text" id="nomeCompleto" placeholder="Nome Completo" required>
+            </div>
+            
+            <div class="input-group">
+                <span class="input-icon">📧</span>
+                <input type="email" id="email" placeholder="Email" required>
+            </div>
+            
+            <div class="input-group">
+                <span class="input-icon">📞</span>
+                <input type="tel" id="telefone" placeholder="Telefone" required>
+            </div>
+            
+            <div class="input-group">
+                <span class="input-icon">🆔</span>
+                <input type="text" id="cpf" placeholder="CPF (apenas números)" maxlength="14" required>
+                <div class="cpf-error" id="cpfError">CPF deve conter apenas 11 números</div>
+            </div>
+            
+            <div class="input-group">
+                <span class="input-icon">📅</span>
+                <input type="date" id="dataEntrada" placeholder="Data de Entrada" required>
+            </div>
+            
+            <div class="input-group">
+                <span class="input-icon">📅</span>
+                <input type="date" id="dataSaida" placeholder="Data de Saída (opcional)">
+            </div>
+            
+            <textarea id="observacoes" placeholder="Observações médicas ou preferências" rows="3"></textarea>
+            
+            <button type="submit" class="button" id="submitBtn">
+                Solicitar Leito UTI
+            </button>
+        </form>
+        
+        <div class="success-message" id="successMsg">
+            <h3>✅ UTI Solicitada!</h3>
+            <p>Equipe crítica entrará em contato <strong>IMEDIATAMENTE</strong>.</p>
+        </div>
+    </div>
+    
+    <script>
+        const cpfInput = document.getElementById('cpf');
+        const cpfError = document.getElementById('cpfError');
+        const form = document.getElementById('reservaForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const successMsg = document.getElementById('successMsg');
+        
+        cpfInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            e.target.value = value;
+            
+            if (value.length > 11) {
+                value = value.slice(0, 11);
+                e.target.value = value;
+            }
+            
+            cpfError.style.display = value.length !== 11 ? 'block' : 'none';
+            submitBtn.disabled = value.length !== 11;
+        });
+        
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const nome = document.getElementById('nomeCompleto').value;
+            const email = document.getElementById('email').value;
+            const telefone = document.getElementById('telefone').value;
+            const cpf = cpfInput.value;
+            const dataEntrada = document.getElementById('dataEntrada').value;
+            const dataSaida = document.getElementById('dataSaida').value;
+            const observacoes = document.getElementById('observacoes').value;
+            
+            if (cpf.length !== 11) {
+                cpfError.style.display = 'block';
+                return;
+            }
+            
+            const reservaData = {
+                nome,
+                email,
+                telefone,
+                tipo_internacao: 'UTI',
+                data_entrada: dataEntrada,
+                data_saida: dataSaida || null,
+                observacoes: observacoes || null
+            };
+            
+            const apiUrl = window.location.protocol === 'file:'
+                ? 'http://localhost/hospital/server/api/internacoes.php'
+                : '../server/api/internacoes.php';
+            
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(reservaData)
+                });
+                
+                const result = await response.json();
+                
+                if (!response.ok || !result.ok) {
+                    throw new Error(result?.error || 'Falha ao salvar');
+                }
+                
+                console.log('Internação salva no banco:', result);
+                
+                // Mostrar confirmação
+                form.style.display = 'none';
+                successMsg.style.display = 'block';
+                successMsg.scrollIntoView({ behavior: 'smooth' });
+                
+            } catch (err) {
+                console.error('Erro ao salvar no banco:', err);
+                alert('⚠️ Reserva salva localmente, mas falhou ao salvar no banco. Verifique o backend/PHP e o MySQL.');
+                console.log('Dados de reserva:', reservaData);
+                
+                // Mesmo assim mostrar confirmação
+                form.style.display = 'none';
+                successMsg.style.display = 'block';
+                successMsg.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+

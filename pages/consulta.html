@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultas - Hospital Taguatinga</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: url('../img/fundo.webp') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+            color: white;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0,123,255,0.85), rgba(40,167,69,0.7));
+            z-index: -1;
+        }
+        
+        nav {
+            background: rgba(0,0,0,0.9);
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #ffc107;
+        }
+        
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 80px;
+        }
+        
+        .hero-content h1 {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            animation: fadeInUp 1s ease;
+        }
+        
+        .hero-content p {
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            font-weight: 300;
+            margin-bottom: 3rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .section {
+            padding: 6rem 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .section h2 {
+            font-size: clamp(2rem, 6vw, 3rem);
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .card {
+            background: rgba(255,255,255,0.15);
+            padding: 2.5rem 1.5rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+            text-align: center;
+            animation: fadeInUp 1s ease both;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            color: #ffc107;
+        }
+        
+        .form-group {
+            max-width: 500px;
+            margin: 0 auto 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        input, select, textarea {
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.95);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.3);
+            transform: scale(1.02);
+        }
+        
+        .button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(45deg, #007bff, #28a745);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,123,255,0.4);
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,123,255,0.5);
+            background: linear-gradient(45deg, #28a745, #007bff);
+        }
+        
+        .doctor-card {
+            background: rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .doctor-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #ddd;
+            margin: 0 auto 1rem;
+            background-image: linear-gradient(45deg, #ffc107, #007bff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        
+        .schedule-table {
+            width: 100%;
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 2rem;
+        }
+        
+        .schedule-table th {
+            background: rgba(255,193,7,0.8);
+            color: #333;
+            padding: 1rem;
+        }
+        
+        .schedule-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        footer {
+            background: linear-gradient(135deg, #000000, #1a1a1a);
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">🏥 Hospital Taguatinga</div>
+            <ul class="nav-links">
+                <li><a href="Tela-home.html">Home</a></li>
+                <li><a href="Tela-home.html#servicos">Serviços</a></li>
+                <li><a href="hospital-info.html">Sobre</a></li>
+                <li><a href="Tela-home.html#contato">Contato</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <section class="hero">
+        <div class="hero-content">
+            <h1>🩺 Consultas Especializadas</h1>
+            <p>Agende com nossos melhores especialistas em diversas áreas da medicina</p>
+            <button class="button" onclick="document.getElementById('agendar-form').scrollIntoView({behavior: 'smooth'})">Agendar Consulta</button>
+        </div>
+    </section>
+    
+    <section class="section">
+        <div class="container">
+            <h2>Nossas Especialidades</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="card-icon">❤️</div>
+                    <h3>Cardiologia</h3>
+                    <p>Dr. João Silva - CRM-DF 12345</p>
+                    <p>Seg, Qua, Sex | 8h-18h</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🫁</div>
+                    <h3>Pneumologia</h3>
+                    <p>Dra. Maria Santos - CRM-DF 67890</p>
+                    <p>Ter, Qui | 9h-17h</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🧠</div>
+                    <h3>Neurologia</h3>
+                    <p>Dr. Pedro Oliveira - CRM-DF 54321</p>
+                    <p>Seg-Sex | 14h-18h</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">👶</div>
+                    <h3>Pediatria</h3>
+                    <p>Dra. Ana Costa - CRM-DF 98765</p>
+                    <p>Seg-Sab | 8h-12h / 14h-18h</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">👁️</div>
+                    <h3>Oftalmologia</h3>
+                    <p>Dr. Carlos Lima - CRM-DF 45678</p>
+                    <p>Qua, Sex | 9h-16h</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">⚕️</div>
+                    <h3>Clínica Geral</h3>
+                    <p>Vários médicos | Atendimento contínuo</p>
+                    <p>Seg-Sex | 7h-19h</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section" id="agendar-form">
+        <div class="container">
+            <h2>Agende Sua Consulta</h2>
+            <p style="max-width: 600px; margin: 0 auto 2rem; font-size: 1.3rem; opacity: 0.9;">Preencha os dados e receba confirmação imediata</p>
+            <form class="form-group">
+                <input type="text" placeholder="Nome Completo" required>
+                <input type="tel" placeholder="Telefone/WhatsApp" required>
+                <input type="email" placeholder="Email (opcional)">
+                <select required>
+                    <option value="">Especialidade desejada</option>
+                    <option>Cardiologia</option>
+                    <option>Pneumologia</option>
+                    <option>Neurologia</option>
+                    <option>Pediatria</option>
+                    <option>Oftalmologia</option>
+                    <option>Clínica Geral</option>
+                    <option>Outra (especificar)</option>
+                </select>
+                <input type="date" required>
+                <input type="time" required>
+                <textarea placeholder="Observações ou preferências" rows="3"></textarea>
+                <button type="submit" class="button">Confirmar Agendamento</button>
+            </form>
+            
+            <div class="schedule-table-container">
+                <h3 style="margin-bottom: 1rem;">Horários disponíveis esta semana</h3>
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Especialidade</th>
+                            <th>Segunda</th>
+                            <th>Terça</th>
+                            <th>Quarta</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cardiologia</td>
+                            <td>8h-12h ✓</td>
+                            <td>-</td>
+                            <td>14h-18h ✓</td>
+                        </tr>
+                        <tr>
+                            <td>Pediatria</td>
+                            <td>8h-12h ✓</td>
+                            <td>14h-18h ✓</td>
+                            <td>8h-12h ✓</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Hospital Taguatinga - Consultas e especialidades</p>
+            <p>📞 (61) 1234-5678 | 📍 Taguatinga-DF</p>
+        </div>
+    </footer>
+    
+    <script>
+        document.querySelector('.form-group')?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+
+
+            const inputs = document.querySelectorAll('.form-group input');
+            const selects = document.querySelector('.form-group select');
+            const textarea = document.querySelector('.form-group textarea');
+
+            const nome = inputs[0]?.value?.trim() || '';
+            // No seu formulário a 2ª coluna é “Telefone/WhatsApp”. O backend (PHP) exige `email`.
+            // Para não quebrar, vamos enviar o telefone como `email` (campo obrigatório no backend).
+            const email = inputs[1]?.value?.trim() || '';
+            const especialidade = selects?.value?.trim() || '';
+            const data = inputs[2]?.value?.trim() || '';
+            const hora = inputs[3]?.value?.trim() || '';
+            const observacoes = textarea?.value?.trim() || '';
+
+            // o backend exige email (no PHP, ele valida como obrigatório)
+            if (nome === '' || email === '' || especialidade === '' || data === '' || hora === '') {
+                alert('⚠️ Preencha: Nome, Email, Especialidade, Data e Hora.');
+                return;
+            }
+
+            const formData = {
+                nome,
+                email,
+                especialidade,
+                data,
+                hora,
+                observacoes
+            };
+
+            const apiUrl = window.location.protocol === 'file:'
+                ? 'http://localhost/hospital/server/api/agendamentos.php'
+                : '../server/api/agendamentos.php';
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (!response.ok || !result.ok) {
+                    throw new Error(result?.error || 'Falha ao salvar');
+                }
+
+                alert('✅ Agendamento confirmado! ID: ' + (result.id ?? '—'));
+                localStorage.setItem('lastBooking', JSON.stringify({ ...formData, id: result.id || null }));
+                e.target.reset();
+            } catch (err) {
+                console.error('Erro ao salvar no banco:', err);
+                alert('⚠️ Não foi possível salvar no banco. Verifique MySQL/PHP/rota. Detalhe: ' + (err?.message || err));
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+

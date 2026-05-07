@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Teste Exames</title>
+</head>
+<body>
+    <h1>Teste de Agendamento de Exames</h1>
+    <button onclick="testarAPI()">Testar API de Exames</button>
+    <div id="resultado"></div>
+
+    <script>
+        async function testarAPI() {
+            const resultado = document.getElementById('resultado');
+            resultado.innerHTML = 'Testando...';
+
+            const exameData = {
+                nome: 'João Silva',
+                email: 'joao@teste.com',
+                telefone: '61999999999',
+                tipo_exame: 'Hemograma Completo',
+                data_exame: '2024-01-01',
+                hora_exame: '08:00',
+                observacoes: 'Exame de rotina'
+            };
+
+            try {
+                const response = await fetch('http://localhost/hospital/server/api/exames.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(exameData)
+                });
+
+                const result = await response.json();
+                resultado.innerHTML = '<pre>' + JSON.stringify(result, null, 2) + '</pre>';
+
+                if (response.ok && result.ok) {
+                    resultado.innerHTML += '<p style="color: green;">✅ Sucesso! Verifique o banco de dados.</p>';
+                } else {
+                    resultado.innerHTML += '<p style="color: red;">❌ Erro: ' + (result.error || 'Desconhecido') + '</p>';
+                }
+            } catch (err) {
+                resultado.innerHTML = '<p style="color: red;">Erro de rede: ' + err.message + '</p>';
+            }
+        }
+    </script>
+</body>
+</html>

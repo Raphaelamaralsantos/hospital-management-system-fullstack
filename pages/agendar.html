@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendar Consulta - Hospital</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">🏥 Hospital</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="servicos.html">Serviços</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="agendar.html">Agendar</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero" style="min-height: 100vh; padding-top: 8rem;">
+        <div class="container">
+            <h1>Agendar Consulta</h1>
+            <p>Preencha o formulário para marcar sua consulta</p>
+            
+            <form id="bookingForm" class="form-group">
+                <input type="text" id="nome" placeholder="Nome Completo" required>
+                <input type="email" id="email" placeholder="Email" required>
+                <select id="especialidade" required>
+                    <option value="">Especialidade</option>
+                    <option value="cardiologia">Cardiologia</option>
+                    <option value="dermatologia">Dermatologia</option>
+                    <option value="ortopedia">Ortopedia</option>
+                    <option value="pediatria">Pediatria</option>
+                    <option value="clinica-geral">Clínica Geral</option>
+                </select>
+                <input type="date" id="data" required>
+                <input type="time" id="hora" required>
+                <textarea id="observacoes" placeholder="Observações (opcional)" rows="4"></textarea>
+                <button type="submit" class="button" style="width: 100%;">Confirmar Agendamento</button>
+            </form>
+
+            <div id="confirmation" style="display: none; background: rgba(40,167,69,0.3); padding: 2rem; border-radius: 20px; margin-top: 2rem; text-align: center;">
+                <h3>✅ Agendamento Confirmado!</h3>
+                <p id="confDetails"></p>
+                <a href="index.html" class="button">Voltar ao Home</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Hospital Taguatinga. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        let currentUser = null;
+
+        // Sistema de notificações toast
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 1rem 1.5rem;
+                border-radius: 10px;
+                color: white;
+                font-weight: 600;
+                z-index: 10000;
+                transform: translateX(400px);
+                transition: transform 0.3s ease;
+                backdrop-filter: blur(10px);
+                ${type === 'success'
+                    ? 'background: rgba(40,167,69,0.9); border: 1px solid rgba(40,167,69,0.5);'
+                    : 'background: rgba(220,53,69,0.9); border: 1px solid rgba(220,53,69,0.5);'
+                }
+            `;
+            document.body.appendChild(toast);
+
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Loading states
+        function showLoading(button) {
+            button.innerHTML = '⏳ Agendando...';
+            button.disabled = true;
+        }
+
+        function hideLoading(button, text) {
+            button.innerHTML = text;
+            button.disabled = false;
+        }
+
+        // Verificar autenticação
+        async function checkAuth() {
+            const sessionId = localStorage.getItem('session_id');
+            if (!sessionId) {
+                showToast('Faça login primeiro!', 'error');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+                return false;
+            }
+
+            try {
+                const response = await fetch('../server/api/auth.php?action=check', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ session_id: sessionId })
+                });
+
+                const result = await response.json();
+
+                if (!result.ok) {
+                    localStorage.removeItem('session_id');
+                    showToast('Sessão expirada. Faça login novamente.', 'error');
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 2000);
+                    return false;
+                }
+
+                currentUser = result.user;
+
+                // Preencher campos com dados do usuário
+                document.getElementById('nome').value = currentUser.nome;
+                document.getElementById('email').value = currentUser.email;
+
+                return true;
+
+            } catch (error) {
+                console.error('Erro ao verificar autenticação:', error);
+                showToast('Erro de conexão', 'error');
+                return false;
+            }
+        }
+
+        // Form submit handler
+        document.addEventListener('DOMContentLoaded', async function() {
+            const isAuthenticated = await checkAuth();
+            if (!isAuthenticated) return;
+
+            const bookingForm = document.getElementById('bookingForm');
+            const confirmation = document.getElementById('confirmation');
+            const confDetails = document.getElementById('confDetails');
+
+            bookingForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const button = this.querySelector('button');
+                showLoading(button);
+
+                const formData = {
+                    nome: document.getElementById('nome').value,
+                    email: document.getElementById('email').value,
+                    especialidade: document.getElementById('especialidade').value,
+                    data: document.getElementById('data').value,
+                    hora: document.getElementById('hora').value,
+                    observacoes: document.getElementById('observacoes').value
+                };
+
+                confDetails.innerHTML = `
+                    <strong>${formData.nome}</strong><br>
+                    ${formData.especialidade} - ${formData.data} às ${formData.hora}<br>
+                    Email: ${formData.email}
+                `;
+
+                bookingForm.style.display = 'none';
+                confirmation.style.display = 'block';
+
+                // Salvar no banco via backend PHP (XAMPP)
+                const apiUrl = window.location.protocol === 'file:'
+                    ? 'http://localhost/hospital/server/api/agendamentos.php'
+                    : '../server/api/agendamentos.php';
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(formData)
+                    });
+
+                    const result = await response.json();
+
+                    if (!response.ok || !result.ok) {
+                        throw new Error(result?.error || 'Falha ao salvar');
+                    }
+
+                    console.log('Agendamento salvo no banco:', result);
+                    showToast('✅ Consulta agendada com sucesso!', 'success');
+
+                } catch (err) {
+                    console.error('Erro ao salvar no banco:', err);
+                    showToast('⚠️ Erro ao salvar agendamento. Tente novamente.', 'error');
+
+                    // Reverter para formulário
+                    confirmation.style.display = 'none';
+                    bookingForm.style.display = 'block';
+                } finally {
+                    hideLoading(button, 'Agendar Consulta');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+

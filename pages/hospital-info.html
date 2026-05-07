@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Taguatinga - Sobre Nós</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0d6efd 0%, #28a745 50%, #ffc107 100%), url('../img/fundo.webp');
+            background-blend-mode: overlay;
+            background-size: cover;
+            background-attachment: fixed;
+            color: white;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        nav {
+            background: rgba(0,0,0,0.95);
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #ffc107, #28a745);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: #ffc107;
+            transform: translateY(-2px);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            background: linear-gradient(45deg, #ffc107, #28a745);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .nav-links a:hover::after {
+            width: 80%;
+        }
+        
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 120px 20px 80px;
+            position: relative;
+        }
+        
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #ffffff, #f8f9fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 20px rgba(255,255,255,0.5); }
+            to { text-shadow: 0 0 30px rgba(255,193,7,0.8), 0 0 40px rgba(40,167,69,0.6); }
+        }
+        
+        .hero-subtitle {
+            font-size: clamp(1.3rem, 4vw, 2rem);
+            font-weight: 300;
+            max-width: 700px;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+        
+        .stats {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+        
+        .stat {
+            text-align: center;
+            animation: fadeInUp 1s ease forwards;
+            opacity: 0;
+        }
+        
+        .stat-number {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            display: block;
+            background: linear-gradient(45deg, #ffc107, #28a745);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-top: 0.5rem;
+        }
+        
+        .section {
+            padding: 100px 0;
+            position: relative;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .section-title {
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            text-align: center;
+            margin-bottom: 4rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #ffffff 0%, #f8f9fa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(45deg, #ffc107, #28a745);
+            border-radius: 2px;
+        }
+        
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+        
+        .about-card {
+            background: rgba(255,255,255,0.12);
+            padding: 3rem 2.5rem;
+            border-radius: 25px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .about-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ffc107, #28a745, #0d6efd);
+        }
+        
+        .about-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+            border-color: rgba(255,255,255,0.4);
+        }
+        
+        .about-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            display: block;
+            opacity: 0.9;
+        }
+        
+        .about-card h3 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #ffffff;
+        }
+        
+        .about-card p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            line-height: 1.7;
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #ffc107, #28a745, #0d6efd);
+            border-radius: 2px;
+        }
+        
+        .timeline-item {
+            display: flex;
+            margin-bottom: 4rem;
+            position: relative;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        
+        .timeline-content {
+            width: 45%;
+            padding: 2.5rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+        
+        .timeline-content h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: #ffc107;
+        }
+        
+        .timeline-date {
+            font-size: 1rem;
+            color: #28a745;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+        }
+        
+        .team-card {
+            text-align: center;
+            padding: 2.5rem 2rem;
+            background: rgba(255,255,255,0.08);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .team-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
+        }
+        
+        .team-card:hover::before {
+            left: 100%;
+        }
+        
+        .team-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+        }
+        
+        .team-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(45deg, #ffc107, #28a745);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .team-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+        
+        .team-role {
+            font-size: 1.1rem;
+            color: #ffc107;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+        
+        .team-specialty {
+            opacity: 0.9;
+            font-style: italic;
+        }
+        
+        .cta-section {
+            background: rgba(0,0,0,0.6);
+            padding: 80px 0;
+            text-align: center;
+            margin: 80px 0;
+            border-radius: 30px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.2);
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 1.5rem 4rem;
+            background: linear-gradient(45deg, #28a745, #ffc107);
+            color: white;
+            font-weight: 700;
+            font-size: 1.3rem;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 15px 40px rgba(40,167,69,0.4);
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(40,167,69,0.5);
+        }
+        
+        footer {
+            background: linear-gradient(135deg, rgba(0,0,0,0.9), rgba(26,26,26,0.95));
+            padding: 4rem 0 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .social-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .social-link:hover {
+            transform: translateY(-5px) scale(1.1);
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .stats {
+                gap: 2rem;
+            }
+            
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .timeline::before {
+                left: 20px;
+            }
+            
+            .timeline-item {
+                flex-direction: column !important;
+                margin-bottom: 3rem;
+            }
+            
+            .timeline-content {
+                width: 100%;
+                margin-left: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">🏥 Hospital Taguatinga</div>
+            <ul class="nav-links">
+                <li><a href="Tela-home.html">🏠 Home</a></li>
+                <li><a href="Tela-home.html#servicos">🩺 Serviços</a></li>
+                <li><a href="internacao.html">🛏️ Internação</a></li>
+                <li><a href="Tela-home.html#contato">📞 Contato</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Sobre o Hospital Taguatinga</h1>
+            <p class="hero-subtitle">25 anos cuidando da saúde da comunidade com excelência médica e humanização no atendimento</p>
+            
+            <div class="stats">
+                <div class="stat" style="animation-delay: 0.1s">
+                    <span class="stat-number">+150k</span>
+                    <span class="stat-label">Pacientes atendidos</span>
+                </div>
+                <div class="stat" style="animation-delay: 0.2s">
+                    <span class="stat-number">80+</span>
+                    <span class="stat-label">Leitos disponíveis</span>
+                </div>
+                <div class="stat" style="animation-delay: 0.3s">
+                    <span class="stat-number">50+</span>
+                    <span class="stat-label">Médicos especialistas</span>
+                </div>
+                <div class="stat" style="animation-delay: 0.4s">
+                    <span class="stat-number">24/7</span>
+                    <span class="stat-label">Atendimento emergencial</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section" id="missao">
+        <div class="container">
+            <h2 class="section-title">Nossa Missão</h2>
+            <div class="about-grid">
+                <div class="about-card">
+                    <span class="about-icon">❤️</span>
+                    <h3>Humanização no Atendimento</h3>
+                    <p>Tratar cada paciente como membro da família, com respeito, empatia e acolhimento em todos os momentos de vulnerabilidade.</p>
+                </div>
+                <div class="about-card">
+                    <span class="about-icon">🩺</span>
+                    <h3>Excelência Médica</h3>
+                    <p>Oferecer diagnósticos precisos e tratamentos de ponta com tecnologia de última geração e equipe altamente qualificada.</p>
+                </div>
+                <div class="about-card">
+                    <span class="about-icon">⚡</span>
+                    <h3>Atendimento Rápido</h3>
+                    <p>Processos ágeis desde emergência até alta hospitalar, reduzindo tempo de espera e otimizando recuperação.</p>
+                </div>
+                <div class="about-card">
+                    <span class="about-icon">🌱</span>
+                    <h3>Sustentabilidade</h3>
+                    <p>Práticas ecológicas, reciclagem hospitalar e uso consciente de recursos para um futuro mais saudável.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section" id="historia">
+        <div class="container">
+            <h2 class="section-title">Nossa História</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="timeline-date">1999</span>
+                        <h3>Inauguração</h3>
+                        <p>Hospital nasce com 30 leitos e emergência 24h em Taguatinga Norte, atendendo primeira demanda local.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="timeline-date">2008</span>
+                        <h3>Expansão</h3>
+                        <p>Novos 50 leitos + UTI completa + centro cirúrgico. Parceria com 15 convênios nacionais.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="timeline-date">2015</span>
+                        <h3>Digitalização</h3>
+                        <p>App paciente, prontuário eletrônico, telemedicina. Redução 40% tempo diagnóstico.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="timeline-date">2024</span>
+                        <h3>🏆 Destaque Nacional</h3>
+                        <p>Prêmio qualidade DF + acreditação ONA nível 3 + 150k pacientes celebrados.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section" id="equipe">
+        <div class="container">
+            <h2 class="section-title">Nossa Equipe</h2>
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-avatar">👨‍⚕️</div>
+                    <div class="team-name">Dr. Rafael Silva</div>
+                    <div class="team-role">Diretor Médico</div>
+                    <div class="team-specialty">25 anos Cardiologia & Gestão</div>
+                </div>
+                <div class="team-card">
+
+                    <div class="team-avatar"><img src="../img/pimentel.png" alt="Dr. João Paulo Pimentel" style="width:100%; height:100%; object-fit: cover; border-radius: inherit;"></div>
+                    <div class="team-name">Dr. João Paulo Pimentel</div>
+
+                    <div class="team-role">Dono do hospital </div>
+                    <div class="team-specialty">Especialista em tudo </div>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar">🩺</div>
+                    <div class="team-name">Enf. João Pereira</div>
+                    <div class="team-role">Sup. Enfermagem</div>
+                    <div class="team-specialty">Enfermagem 24h & Treinamentos</div>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar">👨‍💼</div>
+                    <div class="team-name">Sr. Davi Santos</div>
+                    <div class="team-role">Gerente Administrativo</div>
+                    <div class="team-specialty">Convênios & Logística Hospitalar</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="cta-section">
+        <div class="container">
+            <h2 style="font-size: 3rem; margin-bottom: 1.5rem;">Pronto para conhecer nosso hospital?</h2>
+            <p style="font-size: 1.3rem; max-width: 600px; margin: 0 auto 3rem; opacity: 0.95;">
+                Agende sua visita guiada ou tire dúvidas pelo WhatsApp
+            </p>
+            <a href="Tela-home.html#contato" class="cta-button">Agendar Visita</a>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="footer-content">
+            <div style="font-size: 1.5rem; margin-bottom: 1rem;">🏥 Hospital Taguatinga</div>
+            <p style="opacity: 0.9; margin-bottom: 2rem;">25 anos de excelência em saúde | Taguatinga Norte - DF</p>
+            
+            <div class="social-links">
+                <a href="#" class="social-link" style="background: rgba(24,119,242,0.2); color: #1da1f2;">📱</a>
+                <a href="#" class="social-link" style="background: rgba(255,193,7,0.2); color: #ffcc00;">📞</a>
+                <a href="#" class="social-link" style="background: rgba(66,139,202,0.2); color: #4285f4;">📧</a>
+            </div>
+            
+            <p style="opacity: 0.7; margin-top: 2rem; font-size: 0.9rem;">
+                © 2024 Hospital Taguatinga. Todos os direitos reservados | CRM-DF 0012345
+            </p>
+        </div>
+    </footer>
+    
+    <script>
+        // Animações stats
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.animationDelay = '0s';
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.stat, .about-card, .timeline-item, .team-card').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Parallax hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+        });
+    </script>
+</body>
+</html>
+
+

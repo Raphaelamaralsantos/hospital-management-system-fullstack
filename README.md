@@ -1,4 +1,4 @@
-# Hospital Website - Rafael & Davi
+# Hospital Website - Rafael 
 
 ## 🚀 Visão Geral
 Site moderno e responsivo para hospital com sistema completo de gestão de pacientes:
@@ -140,7 +140,7 @@ http://localhost/hospital/server/setup_database.php
 
 ---
 
-**Desenvolvido por Rafael & Davi** 🏥💙
+**Desenvolvido por Rafael** 🏥💙
 - **internacao**: Reservas de leito
 
 ### Configuração XAMPP
@@ -168,4 +168,4 @@ http://localhost/hospital/server/setup_database.php
 - Clamp() para tipografia fluida
 - Media queries otimizadas
 
-Desenvolvido por Rafael & Davi 🏥✨
+Desenvolvido por Rafael  🏥✨
